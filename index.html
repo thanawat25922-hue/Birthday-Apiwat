@@ -18,7 +18,6 @@ body{
   text-align:center;
 }
 
-/* SCREEN */
 .screen{
   display:none;
   height:100vh;
@@ -57,6 +56,18 @@ button{
   cursor:pointer;
 }
 
+/* CAKE */
+#cake{
+  font-size:160px;
+  cursor:pointer;
+  animation:shake 1.5s infinite;
+}
+@keyframes shake{
+  0%,100%{transform:rotate(0)}
+  25%{transform:rotate(-6deg)}
+  75%{transform:rotate(6deg)}
+}
+
 /* STORY */
 .story-img{
   width:85%;
@@ -68,22 +79,25 @@ button{
   box-shadow:0 18px 40px rgba(0,0,0,.18);
 }
 
-/* VIDEO PAGE */
-video{
+/* VIDEO */
+video.play{
   width:85%;
   max-width:420px;
   border-radius:24px;
   box-shadow:0 18px 40px rgba(0,0,0,.25);
 }
 
-/* ================= ENDING ================= */
+/* ENDING */
 #ending{
   background:#000;
   color:#fff;
   overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
 }
 
-/* วิดีโอพื้นหลัง */
 #ending video{
   position:absolute;
   inset:0;
@@ -93,7 +107,6 @@ video{
   z-index:0;
 }
 
-/* overlay */
 #ending .overlay{
   position:absolute;
   inset:0;
@@ -101,26 +114,20 @@ video{
   z-index:1;
 }
 
-/* ข้อความ */
 .ending-text{
   position:relative;
   z-index:2;
   animation:fadeUp 2s ease forwards;
 }
 
-.ending-text h1{
-  font-size:40px;
-}
-
-.credit{
-  margin-top:20px;
-  font-size:16px;
-  opacity:.85;
-}
-
 @keyframes fadeUp{
   from{opacity:0;transform:translateY(30px)}
   to{opacity:1;transform:translateY(0)}
+}
+
+.credit{
+  font-size:16px;
+  opacity:.85;
 }
 </style>
 </head>
@@ -130,8 +137,15 @@ video{
 <!-- START -->
 <div id="start" class="screen show">
   <h1>Happy Birthday APIWAT 🎂</h1>
-  <p>อยากเล่าเรื่องราวของเธอ<br>ตั้งแต่เด็กจนถึงวันนี้ 🤍</p>
-  <button onclick="startStory()">เริ่มเลย ✨</button>
+  <p>วันนี้เป็นวันพิเศษมากเลยนะ 🤍</p>
+  <button onclick="goCake()">เริ่มเลย ✨</button>
+</div>
+
+<!-- CAKE -->
+<div id="cakeScreen" class="screen">
+  <h1>เป่าเค้กก่อน 🎉</h1>
+  <div id="cake">🎂</div>
+  <p>กดเค้กรัว ๆ ให้เทียนดับ 🔥</p>
 </div>
 
 <!-- STORY -->
@@ -143,11 +157,11 @@ video{
   <button onclick="nextStory()">ถัดไป ➜</button>
 </div>
 
-<!-- VIDEO (กดเล่นเอง + บังคับดูจบ) -->
+<!-- VIDEO -->
 <div id="videoScreen" class="screen">
   <button class="back-btn" onclick="show(videoScreen,story)">⬅️</button>
   <h1>Just For You 💖</h1>
-  <video id="loveVideo" controls playsinline>
+  <video id="loveVideo" class="play" controls playsinline>
     <source src="video.mp4" type="video/mp4">
   </video>
   <button id="videoNext" style="display:none" onclick="show(videoScreen,final)">
@@ -157,37 +171,52 @@ video{
 
 <!-- FINAL -->
 <div id="final" class="screen">
-  <button class="back-btn" onclick="show(final,videoScreen)">⬅️</button>
   <h1>Happy Birthday APIWAT 🎉</h1>
   <p>
-    ขอบคุณที่เติบโตมาอย่างดี<br>
     ขอให้ปีที่ 19 นี้<br>
-    เต็มไปด้วยความสุข 🤍
+    เต็มไปด้วยความสุข<br>
+    และรอยยิ้ม 🤍
   </p>
   <button onclick="goEnding()">ตอนจบ ✨</button>
 </div>
 
-<!-- ENDING (วิดีโอเป็นพื้นหลัง) -->
+<!-- ENDING -->
 <div id="ending" class="screen">
-  <video autoplay muted loop playsinline>
+  <video autoplay muted loop playsinline preload="auto">
     <source src="ending.mp4" type="video/mp4">
   </video>
   <div class="overlay"></div>
-
   <div class="ending-text">
     <h1>รักเธอเสมอนะ อภิวัฒน์ 🤍</h1>
-    <p class="credit">
-      create by Tanawut<br>
-      ตั้งใจทำให้เธอนะ
-    </p>
+    <p class="credit">create by Tanawut<br>ตั้งใจทำให้เธอนะ</p>
   </div>
 </div>
 
 <script>
-const storyTitle=document.getElementById("storyTitle");
-const storyImg=document.getElementById("storyImg");
-const storyText=document.getElementById("storyText");
+const screens={
+  start,startScreen:start,
+  cakeScreen,story,videoScreen,final,ending
+};
 
+function show(from,to){
+  from.classList.remove("show");
+  to.classList.add("show");
+}
+
+/* CAKE */
+let cakeClicks=0;
+function goCake(){ show(start,cakeScreen); }
+
+cake.onclick=()=>{
+  cakeClicks++;
+  if(cakeClicks>=10){
+    cake.textContent="🧁";
+    setTimeout(()=>show(cakeScreen,story),800);
+    loadStory();
+  }
+};
+
+/* STORY */
 const stories=[
   {title:"วัยเด็ก 👶",img:"img1.jpg",text:"เด็กน้อยที่ยิ้มเก่งมาก"},
   {title:"เริ่มโต 🧸",img:"img2.jpg",text:"เริ่มซน เริ่มดื้อ"},
@@ -198,18 +227,7 @@ const stories=[
   {title:"วันนี้ 🤍",img:"img7.jpg",text:"คนที่ภูมิใจมาก"},
   {title:"ปัจจุบัน 🎂",img:"img8.jpg",text:"Happy Birthday APIWAT"}
 ];
-
 let index=0;
-
-function show(from,to){
-  from.classList.remove("show");
-  to.classList.add("show");
-}
-
-function startStory(){
-  show(start,story);
-  loadStory();
-}
 
 function loadStory(){
   const s=stories[index];
@@ -217,7 +235,6 @@ function loadStory(){
   storyImg.src=s.img;
   storyText.textContent=s.text;
 }
-
 function nextStory(){
   index++;
   if(index>=stories.length){
@@ -226,23 +243,16 @@ function nextStory(){
   }
   loadStory();
 }
-
 function prevStory(){
-  if(index>0){
-    index--;
-    loadStory();
-  }else{
-    show(story,start);
-  }
+  if(index>0){index--;loadStory();}
 }
 
-/* บังคับดูวิดีโอจบ */
-const loveVideo=document.getElementById("loveVideo");
-const videoNext=document.getElementById("videoNext");
+/* VIDEO */
 loveVideo.onended=()=>{
   videoNext.style.display="inline-block";
 };
 
+/* END */
 function goEnding(){
   show(final,ending);
 }
