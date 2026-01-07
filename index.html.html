@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday APIWAT 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  overflow:hidden;
+  text-align:center;
+  font-family:'Nunito',sans-serif;
+  color:#5a3e36;
+
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,.9) 2px, transparent 3px),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,.8) 2px, transparent 4px),
+    linear-gradient(135deg,#fff1c1,#ffd6e0,#ffe8c8);
+
+  background-size:200px 200px,260px 260px,cover;
+  animation:sparkle 14s linear infinite;
+}
+
+@keyframes sparkle{
+  from{background-position:0 0,0 0,0 0}
+  to{background-position:300px 300px,-200px 200px,0 0}
+}
+
+.screen{
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  padding:20px;
+}
+.show{display:flex}
+
+button{
+  padding:14px 40px;
+  font-size:18px;
+  font-family:'Quicksand',sans-serif;
+  font-weight:600;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(45deg,#ff9a9e,#fad0c4);
+  color:#5a3e36;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.title{
+  font-family:'Quicksand',sans-serif;
+  font-size:80px;
+  font-weight:700;
+  margin:0;
+  color:#ff6f91;
+}
+
+.sub{
+  font-size:22px;
+  line-height:1.7;
+  max-width:90%;
+}
+
+#countdown{
+  font-size:150px;
+  font-weight:700;
+  color:#ff6f91;
+}
+
+#cake{
+  font-size:140px;
+  margin:20px 0;
+  cursor:pointer;
+}
+
+.story-img{
+  width:85%;
+  max-width:420px;
+  border-radius:22px;
+  margin:20px 0;
+  box-shadow:0 18px 40px rgba(0,0,0,.25);
+}
+</style>
+</head>
+
+<body>
+
+<div id="lock" class="screen show">
+  <h1 class="title">Locked</h1>
+  <p class="sub">รอแป๊บนึงนะ 🤍</p>
+</div>
+
+<div id="open" class="screen">
+  <button id="openBtn">Open 🎁</button>
+</div>
+
+<div id="count" class="screen">
+  <div id="countdown">3</div>
+</div>
+
+<div id="birthday" class="screen">
+  <h1 class="title">Happy birthday APIWAT</h1>
+  <p class="sub">
+    วันนี้เป็นวันที่คนคนหนึ่ง<br>
+    เติบโตมาอย่างดีอีกหนึ่งปี 🌷
+  </p>
+  <div id="cake">🎂</div>
+  <p class="sub">แตะเค้กเบา ๆ นะ ✨</p>
+</div>
+
+<div id="story" class="screen">
+  <img id="storyImg" class="story-img">
+  <p id="storyText" class="sub"></p>
+  <button id="nextStory">Next 💫</button>
+</div>
+
+<div id="wish" class="screen">
+  <h1 class="title">For You 🤍</h1>
+  <p class="sub">
+    ขอบคุณที่เติบโตมาอย่างดีขนาดนี้  
+    และขอบคุณที่ทำให้โลกของใครบางคน  
+    อบอุ่นขึ้นทุกวัน 🌷  
+    <br><br>
+    สุขสันต์วันเกิดนะ APIWAT
+  </p>
+</div>
+
+<script>
+const lock=document.getElementById("lock");
+const open=document.getElementById("open");
+const count=document.getElementById("count");
+const birthday=document.getElementById("birthday");
+const wish=document.getElementById("wish");
+const openBtn=document.getElementById("openBtn");
+const countdownEl=document.getElementById("countdown");
+const cake=document.getElementById("cake");
+
+const storyScreen=document.getElementById("story");
+const storyImg=document.getElementById("storyImg");
+const storyText=document.getElementById("storyText");
+const nextStory=document.getElementById("nextStory");
+
+const targetDate=new Date();
+targetDate.setHours(0,0,0,0);
+
+if(new Date()>=targetDate){
+  lock.classList.remove("show");
+  open.classList.add("show");
+}
+
+openBtn.onclick=()=>{
+  open.classList.remove("show");
+  count.classList.add("show");
+
+  let n=3;
+  countdownEl.textContent=n;
+
+  const cd=setInterval(()=>{
+    n--;
+    if(n===0){
+      clearInterval(cd);
+      count.classList.remove("show");
+      birthday.classList.add("show");
+    }else{
+      countdownEl.textContent=n;
+    }
+  },1000);
+};
+
+let taps=0;
+cake.onclick=()=>{
+  taps++;
+  if(taps>=8){
+    birthday.classList.remove("show");
+    showStory();
+  }
+};
+
+/* ===== 8 STORIES ===== */
+const stories=[
+  { img:"img1.jpg", text:"เริ่มต้นจากเด็กตัวเล็ก ๆ ที่ยังไม่รู้เลยว่าโลกกว้างแค่ไหน 🧸" },
+  { img:"img2.jpg", text:"เด็กน้อยที่รอยยิ้มทำให้คนรอบข้างยิ้มตามได้ง่ายมาก 😊" },
+  { img:"img3.jpg", text:"เริ่มไปโรงเรียน เริ่มเรียนรู้ว่าโลกไม่ได้ใจดีเสมอไป 🎒" },
+  { img:"img4.jpg", text:"โตขึ้นอีกนิด ดื้อขึ้นอีกหน่อย แต่ก็ยังเป็นคนใจดีเหมือนเดิม 🌱" },
+  { img:"img5.jpg", text:"ช่วงที่ต้องพยายามมากขึ้น เหนื่อยขึ้น แต่ก็ยังไม่ยอมแพ้ 💪" },
+  { img:"img6.jpg", text:"เริ่มโตเป็นผู้ใหญ่ เริ่มรับผิดชอบ และเริ่มคิดถึงคนอื่นมากขึ้น 🤍" },
+  { img:"img7.jpg", text:"ผ่านหลายเรื่อง ทั้งดีและไม่ดี จนกลายเป็นคนที่น่าภูมิใจ ✨" },
+  { img:"img8.jpg", text:"และวันนี้… คนที่เราอยากอยู่ข้าง ๆ ในทุกวันต่อจากนี้ 🌷" }
+];
+
+let storyIndex=0;
+
+function showStory(){
+  storyScreen.classList.add("show");
+  loadStory();
+}
+
+function loadStory(){
+  storyImg.src=stories[storyIndex].img;
+  storyText.innerHTML=stories[storyIndex].text;
+}
+
+nextStory.onclick=()=>{
+  storyIndex++;
+  if(storyIndex<stories.length){
+    loadStory();
+  }else{
+    storyScreen.classList.remove("show");
+    wish.classList.add("show");
+  }
+};
+</script>
+
+</body>
+</html>
