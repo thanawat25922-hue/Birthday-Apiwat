@@ -184,29 +184,6 @@ button:hover{
   opacity:.95;
   color:white;
 }
-
-/* Sparkles / Hearts */
-.sparkle, .heart {
-  position:absolute;
-  pointer-events:none;
-  animation:floatUp 6s linear infinite;
-  opacity:.6;
-}
-.sparkle{
-  width:6px;
-  height:6px;
-  background:white;
-  border-radius:50%;
-}
-.heart{
-  font-size:18px;
-}
-@keyframes floatUp{
-  0%{transform:translateY(100vh);opacity:0}
-  20%{opacity:.8}
-  100%{transform:translateY(-10vh);opacity:0}
-}
-
 </style>
 </head>
 
@@ -298,7 +275,7 @@ function show(from,to){
 }
 
 /* ========== LOCK SYSTEM ========== */
-const birthdayDate = new Date("2026-01-10 00:00:00");
+const birthdayDate = new Date("2026-01-10 04:00:00");
 function updateCountdown(){
   const now = new Date();
   const diff = birthdayDate - now;
@@ -415,17 +392,6 @@ function goEnding(){
   v.currentTime=0;
   v.play().catch(()=>{});
 }
-
-/* ========== SPARKLE THEME ========== */
-setInterval(()=>{
-  const x=document.createElement("div");
-  x.className=Math.random()>0.5?"sparkle":"heart";
-  x.textContent="❤️";
-  x.style.left=Math.random()*100+"vw";
-  x.style.animationDuration=(4+Math.random()*4)+"s";
-  document.body.appendChild(x);
-  setTimeout(()=>x.remove(),8000);
-},800);
 </script>
 
 </body>
