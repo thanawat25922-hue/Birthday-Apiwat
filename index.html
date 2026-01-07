@@ -5,21 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Happy Birthday APIWAT 🎂</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
 body{
   margin:0;
-  font-family:'Nunito',sans-serif;
-  background:#F8EAE7;
+  font-family:'Kanit',sans-serif;
+  background:#FFF7F0;
   height:100vh;
   overflow:hidden;
   text-align:center;
-  color:#5A4645;
 }
 
-/******** SCREENS ********/
+/* GLOBAL SCREEN */
 .screen{
   display:none;
   width:100%;
@@ -34,104 +33,82 @@ body{
 
 h1{
   font-size:32px;
-  font-weight:700;
-  margin:10px 0;
-  color:#7A514B;
+  margin:14px 0;
+  color:#5C4B51;
 }
 p{
   font-size:20px;
-  line-height:1.8;
-  max-width:85%;
+  color:#6D5E63;
+  margin:8px 0;
 }
 
-/******** BUTTON ********/
+/* BUTTON */
 button{
   margin-top:20px;
   padding:14px 36px;
   font-size:18px;
   border:none;
-  border-radius:40px;
-  background:#FFAFC9;
+  border-radius:32px;
+  background:#FFB6B9;
   color:#fff;
   cursor:pointer;
-  box-shadow:0 6px 18px rgba(0,0,0,.1);
-  transition:.3s;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+  transition:0.2s;
 }
 button:hover{
-  transform:translateY(-3px);
+  transform:scale(1.05);
 }
 
-/******** LOCK COUNTDOWN ********/
-#lockTimer{
-  font-size:26px;
-  margin-top:10px;
-  font-weight:700;
-  color:#946A66;
-}
-
-/******** SOFT CARD ********/
-.card{
-  background:#FFFFFF;
-  padding:20px 30px;
-  border-radius:24px;
-  box-shadow:0 10px 30px rgba(0,0,0,.08);
-}
-
-/******** 3-2-1 COUNTDOWN ********/
-#countDown{
-  background:#FDEDEE;
-  color:#7A514B;
-}
-#countNumber{
-  font-size:110px;
-  font-weight:700;
-  background:white;
-  padding:40px 70px;
-  border-radius:30px;
-  box-shadow:0 10px 30px rgba(0,0,0,.08);
-  animation:pop 1s ease infinite;
+/* COUNTDOWN */
+.count-number{
+  font-size:72px;
+  font-weight:600;
+  color:#FF7B89;
+  animation:pop 0.5s;
 }
 @keyframes pop{
-  0%{transform:scale(.5);opacity:.2}
-  100%{transform:scale(1);opacity:1}
+  from{transform:scale(0.2);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
 
-/******** CAKE ********/
+/* CAKE */
 #cake{
   font-size:150px;
   cursor:pointer;
-  animation:wiggle 1.5s infinite;
+  animation:shake 1.5s infinite;
 }
-@keyframes wiggle{
+@keyframes shake{
   0%,100%{transform:rotate(0)}
   25%{transform:rotate(-4deg)}
   75%{transform:rotate(4deg)}
 }
 
-/******** STORY ********/
+/* STORY */
 .story-img{
   width:85%;
   max-width:420px;
-  height:300px;
+  height:260px;
   object-fit:cover;
-  border-radius:26px;
+  border-radius:20px;
   margin:20px 0;
-  box-shadow:0 12px 30px rgba(0,0,0,.12);
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
 }
 
-/******** VIDEO ********/
+/* VIDEO */
 .video-player{
   width:85%;
   max-width:420px;
-  border-radius:24px;
-  box-shadow:0 12px 30px rgba(0,0,0,.15);
+  border-radius:20px;
+  box-shadow:0 12px 30px rgba(0,0,0,.25);
 }
 
-/******** ENDING ********/
+/* ENDING */
 #ending{
   background:#000;
-  color:#FFF7F7;
+  color:#fff;
+  overflow:hidden;
 }
+
 #endingVideo{
   position:absolute;
   inset:0;
@@ -140,62 +117,62 @@ button:hover{
   object-fit:cover;
   z-index:0;
 }
+
 #endingOverlay{
   position:absolute;
   inset:0;
-  background:rgba(0,0,0,.35);
+  background:rgba(0,0,0,.4);
   z-index:1;
 }
+
 .ending-text{
   position:relative;
   z-index:2;
-  text-shadow:0 2px 10px rgba(0,0,0,.25);
+  text-align:center;
+  animation:fadeUp 1.8s ease forwards;
+}
+.ending-text h1{
+  color:white;
+  text-shadow:0 0 10px rgba(0,0,0,.8);
 }
 .credit{
-  margin-top:20px;
+  margin-top:16px;
   font-size:16px;
   opacity:.85;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOCK -->
-<div id="lockScreen" class="screen show">
-  <div class="card">
-    <h1>ยังไม่ถึงเวลานะ ❤️</h1>
-    <p>จะเปิดให้ดูในวันพิเศษของเธอ 🤍</p>
-    <div id="lockTimer"></div>
-  </div>
-</div>
-
 <!-- START -->
-<div id="start" class="screen">
-  <div class="card">
-    <h1>Happy Birthday APIWAT 🎂</h1>
-    <p>วันนี้เป็นวันพิเศษมากเลยนะ 🤍<br>ดีใจที่ได้อยู่กับเธอ</p>
-    <button onclick="startCountDown()">เริ่มเลย ✨</button>
-  </div>
+<div id="start" class="screen show">
+  <h1>🎂 Happy Birthday APIWAT 🎂</h1>
+  <p>วันนี้เป็นวันพิเศษมากเลยนะ อยู่กับเรานะ 🤍</p>
+  <button onclick="show(start,countdown)">เริ่มเลย ✨</button>
 </div>
 
 <!-- COUNTDOWN -->
-<div id="countDown" class="screen">
-  <div id="countNumber">3</div>
+<div id="countdown" class="screen">
+  <h1>เตรียมตัวนะครับ 🤍</h1>
+  <div id="countNumber" class="count-number"></div>
 </div>
 
 <!-- CAKE -->
 <div id="cakeScreen" class="screen">
-  <h1>เป่าเค้กก่อน 🎉</h1>
+  <h1>เป่าเค้กก่อนนะคนเก่ง 🎉</h1>
   <div id="cake">🎂</div>
-  <p>กดเค้กรัว ๆ ให้เทียนดับ 🔥</p>
-  
+  <p>กดเค้กรัวๆ ให้เทียนดับน้าา 🔥</p>
+
   <div id="cakeMsg" style="display:none">
     <p>
-      Happy birthday นะแฟน 🤍<br>
-      โตขึ้นอีกปีแล้วนะ<br>
-      ขอบคุณที่อยู่กับเรามาตลอด<br>
-      กด Next เค้ามีอะไรให้ดู 💝
+      Happy Birthday นะแฟน 🤍<br>
+      ขอบคุณที่อยู่กับเราเสมอ<br>
+      กด Next ได้เลยครับ 💝
     </p>
     <button onclick="goStory()">Next ➜</button>
   </div>
@@ -211,19 +188,19 @@ button:hover{
 
 <!-- VIDEO -->
 <div id="videoScreen" class="screen">
-  <h1>Just For You 💖</h1>
+  <h1>สำหรับเธอเลย 💓</h1>
   <video id="loveVideo" class="video-player" controls playsinline>
     <source src="video.mp4" type="video/mp4">
   </video>
   <button id="videoNext" style="display:none" onclick="show(videoScreen,final)">
-    ไปต่อ 💌
+    ไปต่อเลย 💌
   </button>
 </div>
 
 <!-- FINAL -->
 <div id="final" class="screen">
-  <h1>Happy Birthday APIWAT 🎉</h1>
-  <p>ขอบคุณที่เติบโตมาอย่างดี<br>ดีใจที่ได้เป็นแฟนเธอนะ 🤍</p>
+  <h1>Happy Birthday อีกครั้งนะ 🤍</h1>
+  <p>ขอให้ปีนี้มีแต่สิ่งดีๆ เข้ามา<br>อยู่กับเรานานๆ นะ</p>
   <button onclick="goEnding()">ตอนจบ ✨</button>
 </div>
 
@@ -233,9 +210,13 @@ button:hover{
     <source src="ending.mp4" type="video/mp4">
   </video>
   <div id="endingOverlay"></div>
+
   <div class="ending-text">
     <h1>รักเธอเสมอนะ อภิวัฒน์ 🤍</h1>
-    <p class="credit">create by Tanawut<br>ตั้งใจทำให้เธอนะ</p>
+    <p class="credit">
+      create by Tanawut<br>
+      ตั้งใจทำให้เธอนะ
+    </p>
   </div>
 </div>
 
@@ -245,47 +226,23 @@ function show(from,to){
   to.classList.add("show");
 }
 
-/******** LOCK DATE ********/
-const birthdayDate = new Date("2026-01-08 02:23:00");
-
-function updateCountdown(){
-  const now = new Date();
-  const diff = birthdayDate - now;
-
-  if(diff <= 0){
-    lockScreen.classList.remove("show");
-    start.classList.add("show");
-    return;
-  }
-
-  const d=Math.floor(diff/(1000*60*60*24));
-  const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-  const m=Math.floor((diff%(1000*60*60))/(1000*60));
-  const s=Math.floor((diff%(1000*60))/1000);
-
-  lockTimer.textContent = `${d} วัน ${h} ชม. ${m} นาที ${s} วินาที`;
-  setTimeout(updateCountdown,1000);
-}
-updateCountdown();
-
-/******** 3-2-1 ********/
-function startCountDown(){
-  show(start,countDown);
-  let num=3;
+/* COUNTDOWN */
+let num=3;
+function startCountdown(){
   countNumber.textContent=num;
-  
-  const timer=setInterval(()=>{
+  let timer=setInterval(()=>{
     num--;
     if(num<=0){
       clearInterval(timer);
-      show(countDown,cakeScreen);
-    }else{
-      countNumber.textContent=num;
+      show(countdown,cakeScreen);
+      return;
     }
+    countNumber.textContent=num;
   },1000);
 }
+start.onclick=()=>{show(start,countdown); startCountdown();};
 
-/******** CAKE ********/
+/* CAKE */
 let cakeClicks=0;
 cake.onclick=()=>{
   cakeClicks++;
@@ -300,16 +257,13 @@ function goStory(){
   loadStory();
 }
 
-/******** STORY ********/
+/* STORY */
 const stories=[
-  {title:"ตอนเด็ก 👶",img:"img1.jpg",text:"น่ารักตั้งแต่เด็ก"},
-  {title:"กำลังโต 🧸",img:"img2.jpg",text:"เริ่มซน เริ่มร่าเริง"},
-  {title:"วัยซน 🚲",img:"img3.jpg",text:"ล้มแล้วลุกเก่ง"},
-  {title:"มัธยม 🎒",img:"img4.jpg",text:"เริ่มรู้จักโลก"},
-  {title:"รอยยิ้ม 😊",img:"img5.jpg",text:"ยิ้มที่เราชอบมาก"},
-  {title:"โตขึ้น 💫",img:"img6.jpg",text:"เป็นตัวเองขึ้นทุกวัน"},
-  {title:"วันนี้ 🤍",img:"img7.jpg",text:"คนที่เราภูมิใจมาก"},
-  {title:"ปัจจุบัน 🎂",img:"img8.jpg",text:"Happy Birthday APIWAT"}
+  {title:"ตอนเด็ก 👶",img:"img1.jpg",text:"เด็กน้อยที่ยิ้มเก่งมาก"},
+  {title:"เริ่มโต 🧸",img:"img2.jpg",text:"เริ่มซนขึ้นนิดนึง"},
+  {title:"วัยเรียน 🎒",img:"img3.jpg",text:"รู้จักโลกมากขึ้น"},
+  {title:"ปัจจุบัน 🤍",img:"img4.jpg",text:"เป็นคนที่เราภูมิใจมาก"},
+  {title:"วันนี้ 🎂",img:"img5.jpg",text:"สุขสันต์วันเกิดนะครับ"}
 ];
 
 let i=0;
@@ -327,12 +281,10 @@ function nextStory(){
   loadStory();
 }
 
-/******** VIDEO ********/
-loveVideo.onended=()=>{
-  videoNext.style.display="inline-block";
-};
+/* VIDEO */
+loveVideo.onended=()=>{ videoNext.style.display="inline-block"; };
 
-/******** ENDING ********/
+/* ENDING */
 function goEnding(){
   show(final,ending);
   const v=document.getElementById("endingVideo");
