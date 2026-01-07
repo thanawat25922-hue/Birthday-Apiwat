@@ -10,40 +10,133 @@
 <style>
 body{
   margin:0;
-  font-family:'Itim', system-ui;
-  background:linear-gradient(135deg,#fff1f7,#fff8e7);
+  font-family:'Itim', system-ui, -apple-system;
+  background:linear-gradient(135deg,#fff1f7,#fff9e6);
   height:100vh;
-  text-align:center;
+  overflow:hidden;
   color:#333;
 }
 
+/* screen system */
 .screen{
   display:none;
   height:100vh;
   justify-content:center;
   align-items:center;
   flex-direction:column;
+  text-align:center;
+  padding:20px;
 }
-
 .show{display:flex}
 
-button{
-  padding:16px 36px;
+/* text */
+h1{
+  font-size:40px;
+  margin-bottom:10px;
+}
+p{
   font-size:20px;
+  line-height:1.6;
+}
+
+/* button */
+button{
+  margin-top:20px;
+  padding:14px 36px;
+  font-size:18px;
   border:none;
   border-radius:999px;
   background:#ff8fab;
   color:#fff;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(255,143,171,.4);
+}
+
+/* story image */
+.story-img{
+  width:80%;
+  max-width:420px;
+  aspect-ratio:4/3;
+  object-fit:cover;
+  border-radius:26px;
+  margin:20px 0;
+  box-shadow:0 18px 40px rgba(0,0,0,.18);
+  background:#fff;
 }
 </style>
 </head>
 
 <body>
 
-<div class="screen show">
-  <h1>🎉 Happy Birthday APIWAT 🎉</h1>
-  <p>เว็บนี้ทำขึ้นมาเพื่อคุณโดยเฉพาะ 🤍</p>
+<!-- OPEN -->
+<div id="open" class="screen show">
+  <h1>🎁 มีอะไรจะให้</h1>
+  <p>กดเปิดดูหน่อยสิ 🤍</p>
+  <button onclick="goStory()">Open</button>
 </div>
+
+<!-- STORY -->
+<div id="story" class="screen">
+  <h1 id="storyTitle">Happy Birthday APIWAT 🎂</h1>
+  <img id="storyImg" class="story-img">
+  <p id="storyText"></p>
+  <button id="nextBtn">Next 💫</button>
+</div>
+
+<!-- END -->
+<div id="end" class="screen">
+  <h1>🤍</h1>
+  <p>
+    ขอให้ปีที่ 19 นี้<br>
+    เป็นปีที่มีรอยยิ้มเยอะที่สุด<br>
+    และมีคนคนนี้อยู่ข้าง ๆ เสมอ
+  </p>
+</div>
+
+<script>
+const openScreen=document.getElementById("open");
+const storyScreen=document.getElementById("story");
+const endScreen=document.getElementById("end");
+
+const storyImg=document.getElementById("storyImg");
+const storyText=document.getElementById("storyText");
+const nextBtn=document.getElementById("nextBtn");
+
+/* 8 ช่วงเวลา */
+const stories=[
+  {img:"img1.jpg",text:"เด็กตัวเล็ก ๆ คนนี้<br>ยังไม่รู้เลยว่าโตขึ้นจะน่ารักขนาดนี้ 🧸"},
+  {img:"img2.jpg",text:"เริ่มโต เริ่มซน<br>แต่รอยยิ้มยังเหมือนเดิม 😊"},
+  {img:"img3.jpg",text:"ช่วงที่โลกเริ่มกว้างขึ้น<br>และความฝันก็เริ่มชัดขึ้น 🌱"},
+  {img:"img4.jpg",text:"เริ่มมีวันที่เหนื่อย<br>แต่ก็ยังไม่ยอมแพ้ 💪"},
+  {img:"img5.jpg",text:"โตขึ้นอีกนิด<br>เก่งขึ้นอีกหน่อย (ดื้อขึ้นด้วยนิดนึง 😆)"},
+  {img:"img6.jpg",text:"ผ่านอะไรมาเยอะกว่าที่คิด<br>แต่ก็ยังเป็นคนใจดีเสมอ"},
+  {img:"img7.jpg",text:"จนมาถึงวันที่ยิ้มได้มากขึ้น<br>และเริ่มมีความสุขกับตัวเอง 🤍"},
+  {img:"img8.jpg",text:"และวันนี้…<br>Happy Birthday APIWAT อายุ 19 🎂"}
+];
+
+let index=0;
+
+function goStory(){
+  openScreen.classList.remove("show");
+  storyScreen.classList.add("show");
+  loadStory();
+}
+
+function loadStory(){
+  storyImg.src=stories[index].img;
+  storyText.innerHTML=stories[index].text;
+}
+
+nextBtn.onclick=()=>{
+  index++;
+  if(index<stories.length){
+    loadStory();
+  }else{
+    storyScreen.classList.remove("show");
+    endScreen.classList.add("show");
+  }
+};
+</script>
 
 </body>
 </html>
