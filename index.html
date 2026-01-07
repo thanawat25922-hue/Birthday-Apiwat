@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
+*{box-sizing:border-box}
 body{
   margin:0;
   font-family:'Nunito',sans-serif;
@@ -17,9 +18,11 @@ body{
   text-align:center;
 }
 
+/* SCREEN */
 .screen{
   display:none;
   height:100vh;
+  width:100%;
   justify-content:center;
   align-items:center;
   flex-direction:column;
@@ -27,7 +30,7 @@ body{
 }
 .show{display:flex}
 
-h1{font-size:36px;margin-bottom:10px}
+h1{font-size:34px;margin-bottom:10px}
 p{font-size:20px;line-height:1.8;max-width:85%}
 
 button{
@@ -65,48 +68,59 @@ button{
   box-shadow:0 18px 40px rgba(0,0,0,.18);
 }
 
-/* VIDEO */
+/* VIDEO PAGE */
 video{
   width:85%;
   max-width:420px;
   border-radius:24px;
-  margin:20px 0;
   box-shadow:0 18px 40px rgba(0,0,0,.25);
 }
 
-/* ENDING */
+/* ================= ENDING ================= */
 #ending{
   background:#000;
   color:#fff;
   overflow:hidden;
 }
 
-.bg-photos img{
+/* วิดีโอพื้นหลัง */
+#ending video{
   position:absolute;
-  width:180px;
-  opacity:0.18;
-  border-radius:18px;
-  animation:float 28s linear infinite;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:0;
 }
 
-.bg-photos img:nth-child(even){
-  animation-direction:alternate-reverse;
+/* overlay */
+#ending .overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  z-index:1;
 }
 
+/* ข้อความ */
 .ending-text{
   position:relative;
   z-index:2;
-  text-align:center;
+  animation:fadeUp 2s ease forwards;
+}
+
+.ending-text h1{
+  font-size:40px;
 }
 
 .credit{
+  margin-top:20px;
   font-size:16px;
   opacity:.85;
 }
 
-@keyframes float{
-  from{transform:translateY(110vh) rotate(0deg)}
-  to{transform:translateY(-120vh) rotate(360deg)}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
 }
 </style>
 </head>
@@ -116,7 +130,7 @@ video{
 <!-- START -->
 <div id="start" class="screen show">
   <h1>Happy Birthday APIWAT 🎂</h1>
-  <p>อยากเล่าเรื่องราวของเธอ<br>ตั้งแต่วันแรกจนถึงวันนี้ 🤍</p>
+  <p>อยากเล่าเรื่องราวของเธอ<br>ตั้งแต่เด็กจนถึงวันนี้ 🤍</p>
   <button onclick="startStory()">เริ่มเลย ✨</button>
 </div>
 
@@ -129,41 +143,43 @@ video{
   <button onclick="nextStory()">ถัดไป ➜</button>
 </div>
 
-<!-- VIDEO -->
+<!-- VIDEO (กดเล่นเอง + บังคับดูจบ) -->
 <div id="videoScreen" class="screen">
-  <button class="back-btn" onclick="goBackToStory()">⬅️</button>
-  <h1>Just For You 💫</h1>
-  <video id="birthdayVideo" playsinline>
+  <button class="back-btn" onclick="show(videoScreen,story)">⬅️</button>
+  <h1>Just For You 💖</h1>
+  <video id="loveVideo" controls playsinline>
     <source src="video.mp4" type="video/mp4">
   </video>
-  <button id="videoNext" onclick="goFinal()" style="display:none">ไปต่อ 💌</button>
+  <button id="videoNext" style="display:none" onclick="show(videoScreen,final)">
+    ไปต่อ 💌
+  </button>
 </div>
 
 <!-- FINAL -->
 <div id="final" class="screen">
-  <button class="back-btn" onclick="goBackToVideo()">⬅️</button>
+  <button class="back-btn" onclick="show(final,videoScreen)">⬅️</button>
   <h1>Happy Birthday APIWAT 🎉</h1>
   <p>
     ขอบคุณที่เติบโตมาอย่างดี<br>
     ขอให้ปีที่ 19 นี้<br>
-    เต็มไปด้วยรอยยิ้มและความสุข 🤍
+    เต็มไปด้วยความสุข 🤍
   </p>
   <button onclick="goEnding()">ตอนจบ ✨</button>
 </div>
 
-<!-- ENDING -->
+<!-- ENDING (วิดีโอเป็นพื้นหลัง) -->
 <div id="ending" class="screen">
-  <div class="bg-photos">
-    <img src="bg1.jpg"><img src="bg2.jpg"><img src="bg3.jpg"><img src="bg4.jpg">
-    <img src="bg5.jpg"><img src="bg6.jpg"><img src="bg7.jpg"><img src="bg8.jpg">
-    <img src="bg9.jpg"><img src="bg10.jpg"><img src="bg11.jpg"><img src="bg12.jpg">
-    <img src="bg13.jpg"><img src="bg14.jpg"><img src="bg15.jpg"><img src="bg16.jpg">
-    <img src="bg17.jpg"><img src="bg18.jpg"><img src="bg19.jpg"><img src="bg20.jpg">
-  </div>
+  <video autoplay muted loop playsinline>
+    <source src="ending.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
 
   <div class="ending-text">
     <h1>รักเธอเสมอนะ อภิวัฒน์ 🤍</h1>
-    <p class="credit">create by Tanawut<br>ตั้งใจทำให้เธอนะ</p>
+    <p class="credit">
+      create by Tanawut<br>
+      ตั้งใจทำให้เธอนะ
+    </p>
   </div>
 </div>
 
@@ -206,7 +222,6 @@ function nextStory(){
   index++;
   if(index>=stories.length){
     show(story,videoScreen);
-    document.getElementById("birthdayVideo").play();
     return;
   }
   loadStory();
@@ -221,16 +236,12 @@ function prevStory(){
   }
 }
 
-const video=document.getElementById("birthdayVideo");
+/* บังคับดูวิดีโอจบ */
+const loveVideo=document.getElementById("loveVideo");
 const videoNext=document.getElementById("videoNext");
-
-video.onended=()=>{
+loveVideo.onended=()=>{
   videoNext.style.display="inline-block";
 };
-
-function goFinal(){ show(videoScreen,final); }
-function goBackToStory(){ show(videoScreen,story); }
-function goBackToVideo(){ show(final,videoScreen); }
 
 function goEnding(){
   show(final,ending);
