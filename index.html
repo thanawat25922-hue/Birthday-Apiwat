@@ -45,11 +45,27 @@ button{
   box-shadow:0 10px 25px rgba(0,0,0,.2);
 }
 
-/* COUNTDOWN */
+/* COUNTDOWN LOCK */
 #lockTimer{
   font-size:26px;
   margin-top:10px;
   font-weight:700;
+}
+
+/* 3-2-1 COUNTDOWN */
+#countDown{
+  background:#000;
+  color:#fff;
+  font-size:100px;
+}
+#countNumber{
+  font-size:120px;
+  font-weight:700;
+  animation:zoom 1s ease infinite;
+}
+@keyframes zoom{
+  from{transform:scale(0.5);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
 
 /* CAKE */
@@ -139,7 +155,12 @@ button{
 <div id="start" class="screen">
   <h1>Happy Birthday APIWAT 🎂</h1>
   <p>วันนี้เป็นวันพิเศษมากเลยนะ 🤍</p>
-  <button onclick="show(start,cakeScreen)">เริ่มเลย ✨</button>
+  <button onclick="startCountDown()">เริ่มเลย ✨</button>
+</div>
+
+<!-- COUNTDOWN 3 2 1 -->
+<div id="countDown" class="screen">
+  <div id="countNumber">3</div>
 </div>
 
 <!-- CAKE -->
@@ -166,7 +187,7 @@ button{
   <button onclick="nextStory()">ถัดไป ➜</button>
 </div>
 
-<!-- VIDEO SCREEN -->
+<!-- VIDEO -->
 <div id="videoScreen" class="screen">
   <h1>Just For You 💖</h1>
   <video id="loveVideo" class="video-player" controls playsinline>
@@ -207,7 +228,7 @@ function show(from,to){
 }
 
 /* ==================== LOCK COUNTDOWN ==================== */
-const birthdayDate = new Date("2026-01-08 02:00:00"); // ← แก้วันได้
+const birthdayDate = new Date("2026-01-10 00:00:00");
 
 function updateCountdown(){
   const now = new Date();
@@ -229,6 +250,23 @@ function updateCountdown(){
   setTimeout(updateCountdown,1000);
 }
 updateCountdown();
+
+/* ==================== 3 → 2 → 1 ==================== */
+function startCountDown(){
+  show(start,countDown);
+  let num = 3;
+  countNumber.textContent = num;
+
+  const timer = setInterval(()=>{
+    num--;
+    if(num <= 0){
+      clearInterval(timer);
+      show(countDown,cakeScreen);
+    }else{
+      countNumber.textContent = num;
+    }
+  },1000);
+}
 
 /* ==================== CAKE ==================== */
 let cakeClicks=0;
