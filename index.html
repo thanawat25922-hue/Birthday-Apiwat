@@ -154,7 +154,6 @@ video{
 <!-- ENDING -->
 <div id="ending" class="screen">
   <div class="bg-photos">
-    <!-- 20 BG IMAGES -->
     <img src="bg1.jpg"><img src="bg2.jpg"><img src="bg3.jpg"><img src="bg4.jpg">
     <img src="bg5.jpg"><img src="bg6.jpg"><img src="bg7.jpg"><img src="bg8.jpg">
     <img src="bg9.jpg"><img src="bg10.jpg"><img src="bg11.jpg"><img src="bg12.jpg">
@@ -168,13 +167,7 @@ video{
   </div>
 </div>
 
-<audio id="endingMusic" src="ending.mp3" loop></audio>
-
 <script>
-const screens={
-  start,story,videoScreen,final,ending
-};
-
 const storyTitle=document.getElementById("storyTitle");
 const storyImg=document.getElementById("storyImg");
 const storyText=document.getElementById("storyText");
@@ -239,11 +232,8 @@ function goFinal(){ show(videoScreen,final); }
 function goBackToStory(){ show(videoScreen,story); }
 function goBackToVideo(){ show(final,videoScreen); }
 
-const endingMusic=document.getElementById("endingMusic");
 function goEnding(){
   show(final,ending);
-  endingMusic.volume=0.6;
-  endingMusic.play();
 }
 </script>
 
