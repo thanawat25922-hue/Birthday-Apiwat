@@ -23,19 +23,12 @@ body{
   justify-content:center;
   align-items:center;
   flex-direction:column;
+  position:relative;
 }
 .show{display:flex}
 
-h1{
-  font-size:36px;
-  margin-bottom:10px;
-}
-
-p{
-  font-size:20px;
-  line-height:1.8;
-  max-width:85%;
-}
+h1{font-size:36px;margin-bottom:10px}
+p{font-size:20px;line-height:1.8;max-width:85%}
 
 button{
   margin-top:20px;
@@ -47,6 +40,18 @@ button{
   color:#fff;
   cursor:pointer;
   box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+.back-btn{
+  position:absolute;
+  top:20px;
+  left:20px;
+  padding:10px 18px;
+  font-size:16px;
+  border:none;
+  border-radius:30px;
+  background:rgba(255,255,255,.9);
+  cursor:pointer;
 }
 
 /* STORY */
@@ -68,6 +73,41 @@ video{
   margin:20px 0;
   box-shadow:0 18px 40px rgba(0,0,0,.25);
 }
+
+/* ENDING */
+#ending{
+  background:#000;
+  color:#fff;
+  overflow:hidden;
+}
+
+.bg-photos img{
+  position:absolute;
+  width:180px;
+  opacity:0.18;
+  border-radius:18px;
+  animation:float 28s linear infinite;
+}
+
+.bg-photos img:nth-child(even){
+  animation-direction:alternate-reverse;
+}
+
+.ending-text{
+  position:relative;
+  z-index:2;
+  text-align:center;
+}
+
+.credit{
+  font-size:16px;
+  opacity:.85;
+}
+
+@keyframes float{
+  from{transform:translateY(110vh) rotate(0deg)}
+  to{transform:translateY(-120vh) rotate(360deg)}
+}
 </style>
 </head>
 
@@ -76,12 +116,13 @@ video{
 <!-- START -->
 <div id="start" class="screen show">
   <h1>Happy Birthday APIWAT 🎂</h1>
-  <p>วันนี้เราอยากเล่าเรื่องราวของเธอ<br>ตั้งแต่วันแรกจนถึงวันนี้ 🤍</p>
+  <p>อยากเล่าเรื่องราวของเธอ<br>ตั้งแต่วันแรกจนถึงวันนี้ 🤍</p>
   <button onclick="startStory()">เริ่มเลย ✨</button>
 </div>
 
 <!-- STORY -->
 <div id="story" class="screen">
+  <button class="back-btn" onclick="prevStory()">⬅️</button>
   <h1 id="storyTitle"></h1>
   <img id="storyImg" class="story-img">
   <p id="storyText"></p>
@@ -90,51 +131,74 @@ video{
 
 <!-- VIDEO -->
 <div id="videoScreen" class="screen">
+  <button class="back-btn" onclick="goBackToStory()">⬅️</button>
   <h1>Just For You 💫</h1>
-  <video id="birthdayVideo" controls playsinline>
+  <video id="birthdayVideo" playsinline>
     <source src="video.mp4" type="video/mp4">
   </video>
-  <button onclick="goFinal()">ไปต่อ 💌</button>
+  <button id="videoNext" onclick="goFinal()" style="display:none">ไปต่อ 💌</button>
 </div>
 
 <!-- FINAL -->
 <div id="final" class="screen">
+  <button class="back-btn" onclick="goBackToVideo()">⬅️</button>
   <h1>Happy Birthday APIWAT 🎉</h1>
   <p>
     ขอบคุณที่เติบโตมาอย่างดี<br>
-    ขอบคุณที่เป็นตัวเองในทุกวัน<br><br>
     ขอให้ปีที่ 19 นี้<br>
-    เต็มไปด้วยความสุข เสียงหัวเราะ<br>
-    และมีเราข้าง ๆ แบบนี้เสมอ 🤍
+    เต็มไปด้วยรอยยิ้มและความสุข 🤍
   </p>
+  <button onclick="goEnding()">ตอนจบ ✨</button>
 </div>
 
+<!-- ENDING -->
+<div id="ending" class="screen">
+  <div class="bg-photos">
+    <!-- 20 BG IMAGES -->
+    <img src="bg1.jpg"><img src="bg2.jpg"><img src="bg3.jpg"><img src="bg4.jpg">
+    <img src="bg5.jpg"><img src="bg6.jpg"><img src="bg7.jpg"><img src="bg8.jpg">
+    <img src="bg9.jpg"><img src="bg10.jpg"><img src="bg11.jpg"><img src="bg12.jpg">
+    <img src="bg13.jpg"><img src="bg14.jpg"><img src="bg15.jpg"><img src="bg16.jpg">
+    <img src="bg17.jpg"><img src="bg18.jpg"><img src="bg19.jpg"><img src="bg20.jpg">
+  </div>
+
+  <div class="ending-text">
+    <h1>รักเธอเสมอนะ อภิวัฒน์ 🤍</h1>
+    <p class="credit">create by Tanawut<br>ตั้งใจทำให้เธอนะ</p>
+  </div>
+</div>
+
+<audio id="endingMusic" src="ending.mp3" loop></audio>
+
 <script>
-const start=document.getElementById("start");
-const story=document.getElementById("story");
-const videoScreen=document.getElementById("videoScreen");
-const final=document.getElementById("final");
+const screens={
+  start,story,videoScreen,final,ending
+};
 
 const storyTitle=document.getElementById("storyTitle");
 const storyImg=document.getElementById("storyImg");
 const storyText=document.getElementById("storyText");
 
 const stories=[
-  { title:"วัยเด็ก 👶", img:"img1.jpg", text:"เด็กน้อยที่ยิ้มเก่งตั้งแต่ยังไม่รู้เรื่อง" },
-  { title:"เริ่มโต 🧸", img:"img2.jpg", text:"เริ่มดื้อขึ้นนิดหน่อย แต่ก็น่ารักเหมือนเดิม" },
-  { title:"วัยซน 🚲", img:"img3.jpg", text:"ล้มบ้าง เจ็บบ้าง แต่ก็ลุกเก่งมาก" },
-  { title:"มัธยม 🎒", img:"img4.jpg", text:"ช่วงที่เริ่มรู้จักโลกมากขึ้น" },
-  { title:"รอยยิ้ม 😊", img:"img5.jpg", text:"ยิ้มแบบนี้ทีไร ใจเราละลายทุกที" },
-  { title:"โตขึ้น 💫", img:"img6.jpg", text:"เริ่มเป็นตัวเองในแบบที่เท่มาก" },
-  { title:"วันนี้ 🤍", img:"img7.jpg", text:"คนที่เราภูมิใจในตัวมากที่สุด" },
-  { title:"ปัจจุบัน 🎂", img:"img8.jpg", text:"Happy Birthday APIWAT อายุ 19 แล้วนะ!" }
+  {title:"วัยเด็ก 👶",img:"img1.jpg",text:"เด็กน้อยที่ยิ้มเก่งมาก"},
+  {title:"เริ่มโต 🧸",img:"img2.jpg",text:"เริ่มซน เริ่มดื้อ"},
+  {title:"วัยซน 🚲",img:"img3.jpg",text:"ล้มแล้วลุกเก่ง"},
+  {title:"มัธยม 🎒",img:"img4.jpg",text:"เริ่มรู้จักโลก"},
+  {title:"รอยยิ้ม 😊",img:"img5.jpg",text:"รอยยิ้มที่เรารัก"},
+  {title:"โตขึ้น 💫",img:"img6.jpg",text:"เป็นตัวเองมากขึ้น"},
+  {title:"วันนี้ 🤍",img:"img7.jpg",text:"คนที่ภูมิใจมาก"},
+  {title:"ปัจจุบัน 🎂",img:"img8.jpg",text:"Happy Birthday APIWAT"}
 ];
 
 let index=0;
 
+function show(from,to){
+  from.classList.remove("show");
+  to.classList.add("show");
+}
+
 function startStory(){
-  start.classList.remove("show");
-  story.classList.add("show");
+  show(start,story);
   loadStory();
 }
 
@@ -148,19 +212,39 @@ function loadStory(){
 function nextStory(){
   index++;
   if(index>=stories.length){
-    story.classList.remove("show");
-    videoScreen.classList.add("show");
+    show(story,videoScreen);
+    document.getElementById("birthdayVideo").play();
     return;
   }
   loadStory();
 }
 
-function goFinal(){
-  videoScreen.classList.remove("show");
-  final.classList.add("show");
+function prevStory(){
+  if(index>0){
+    index--;
+    loadStory();
+  }else{
+    show(story,start);
+  }
 }
 
-document.getElementById("birthdayVideo").onended=goFinal;
+const video=document.getElementById("birthdayVideo");
+const videoNext=document.getElementById("videoNext");
+
+video.onended=()=>{
+  videoNext.style.display="inline-block";
+};
+
+function goFinal(){ show(videoScreen,final); }
+function goBackToStory(){ show(videoScreen,story); }
+function goBackToVideo(){ show(final,videoScreen); }
+
+const endingMusic=document.getElementById("endingMusic");
+function goEnding(){
+  show(final,ending);
+  endingMusic.volume=0.6;
+  endingMusic.play();
+}
 </script>
 
 </body>
