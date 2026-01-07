@@ -2,116 +2,289 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>Happy Birthday</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday APIWAT 🎂</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
-    body {
-        margin: 0;
-        font-family: sans-serif;
-        background: #111;
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        flex-direction: column;
-        text-align: center;
-    }
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Nunito',sans-serif;
+  background:linear-gradient(135deg,#fff1eb,#ace0f9);
+  height:100vh;
+  overflow:hidden;
+  text-align:center;
+}
 
-    #startSection, #countdownSection, #cakeSection {
-        display: none;
-    }
+/* SCREEN */
+.screen{
+  display:none;
+  width:100%;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  position:relative;
+}
+.show{display:flex}
 
-    #countdownNumber {
-        font-size: 120px;
-        font-weight: bold;
-    }
+h1{font-size:34px;margin:10px 0}
+p{font-size:20px;line-height:1.8;max-width:85%}
 
-    button {
-        padding: 12px 22px;
-        font-size: 18px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        background: #ff4e4e;
-        color: white;
-        margin-top: 20px;
-    }
+button{
+  margin-top:20px;
+  padding:14px 36px;
+  font-size:18px;
+  border:none;
+  border-radius:40px;
+  background:#ff8fab;
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+/* COUNTDOWN */
+#lockTimer{
+  font-size:26px;
+  margin-top:10px;
+  font-weight:700;
+}
+
+/* CAKE */
+#cake{
+  font-size:150px;
+  cursor:pointer;
+  animation:shake 1.5s infinite;
+}
+@keyframes shake{
+  0%,100%{transform:rotate(0)}
+  25%{transform:rotate(-6deg)}
+  75%{transform:rotate(6deg)}
+}
+
+/* STORY */
+.story-img{
+  width:85%;
+  max-width:420px;
+  height:300px;
+  object-fit:cover;
+  border-radius:26px;
+  margin:20px 0;
+  box-shadow:0 18px 40px rgba(0,0,0,.18);
+}
+
+/* VIDEO (กดเล่น) */
+.video-player{
+  width:85%;
+  max-width:420px;
+  border-radius:24px;
+  box-shadow:0 18px 40px rgba(0,0,0,.25);
+}
+
+/* ENDING */
+#ending{
+  background:#000;
+  color:#fff;
+  overflow:hidden;
+}
+
+#endingVideo{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:0;
+}
+
+#endingOverlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:1;
+}
+
+.ending-text{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  animation:fadeUp 2s ease forwards;
+}
+
+.credit{
+  margin-top:20px;
+  font-size:16px;
+  opacity:.85;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
 </style>
 </head>
+
 <body>
 
-<div id="lockSection">
-    <h1>รออีกนิดนึงนะ ❤️</h1>
-    <p id="lockMessage"></p>
+<!-- LOCK SCREEN -->
+<div id="lockScreen" class="screen show">
+  <h1>ยังไม่ถึงเวลานะ ❤️</h1>
+  <p>จะเปิดให้ดูในวันพิเศษของเธอ 🤍</p>
+  <div id="lockTimer"></div>
 </div>
 
-<div id="startSection">
-    <h1>ถึงวันแล้ว! 🎉</h1>
-    <button onclick="startCountdown()">เริ่มเลย!</button>
+<!-- START -->
+<div id="start" class="screen">
+  <h1>Happy Birthday APIWAT 🎂</h1>
+  <p>วันนี้เป็นวันพิเศษมากเลยนะ 🤍</p>
+  <button onclick="show(start,cakeScreen)">เริ่มเลย ✨</button>
 </div>
 
-<div id="countdownSection">
-    <h1 id="countdownNumber"></h1>
+<!-- CAKE -->
+<div id="cakeScreen" class="screen">
+  <h1>เป่าเค้กก่อน 🎉</h1>
+  <div id="cake">🎂</div>
+  <p>กดเค้กรัว ๆ ให้เทียนดับ 🔥</p>
+
+  <div id="cakeMsg" style="display:none">
+    <p>
+      Happy birthday นะแฟน 🤍<br>
+      เติบโตขึ้นอีกปีแล้ว<br>
+      ลองกด Next เค้ามีอะไรให้เธอดู 💝
+    </p>
+    <button onclick="goStory()">Next ➜</button>
+  </div>
 </div>
 
-<div id="cakeSection">
-    <h1>เป่าเค้กได้เลย! 🎂</h1>
-    <p>ลองเป่าเข้าไมค์ดูนะ</p>
-    <button onclick="finishCake()">เป่าเสร็จแล้ว</button>
+<!-- STORY -->
+<div id="story" class="screen">
+  <h1 id="storyTitle"></h1>
+  <img id="storyImg" class="story-img">
+  <p id="storyText"></p>
+  <button onclick="nextStory()">ถัดไป ➜</button>
+</div>
+
+<!-- VIDEO SCREEN -->
+<div id="videoScreen" class="screen">
+  <h1>Just For You 💖</h1>
+  <video id="loveVideo" class="video-player" controls playsinline>
+    <source src="video.mp4" type="video/mp4">
+  </video>
+  <button id="videoNext" style="display:none" onclick="show(videoScreen,final)">
+    ไปต่อ 💌
+  </button>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="screen">
+  <h1>Happy Birthday APIWAT 🎉</h1>
+  <p>ขอบคุณที่เติบโตมาอย่างดี 🤍</p>
+  <button onclick="goEnding()">ตอนจบ ✨</button>
+</div>
+
+<!-- ENDING -->
+<div id="ending" class="screen">
+  <video id="endingVideo" muted loop playsinline preload="auto">
+    <source src="ending.mp4" type="video/mp4">
+  </video>
+  <div id="endingOverlay"></div>
+
+  <div class="ending-text">
+    <h1>รักเธอเสมอนะ อภิวัฒน์ 🤍</h1>
+    <p class="credit">
+      create by Tanawut<br>
+      ตั้งใจทำให้เธอนะ
+    </p>
+  </div>
 </div>
 
 <script>
-    // 🔒 ตั้งวันเกิด
-    const birthdayDate = new Date("2026-01-08 02:00:00"); // ← แก้ตรงนี้
+function show(from,to){
+  from.classList.remove("show");
+  to.classList.add("show");
+}
 
-    function checkDate() {
-        const now = new Date();
-        const lockSection = document.getElementById("lockSection");
-        const startSection = document.getElementById("startSection");
-        const message = document.getElementById("lockMessage");
+/* ==================== LOCK COUNTDOWN ==================== */
+const birthdayDate = new Date("2026-01-10 00:00:00"); // ← แก้วันได้
 
-        if (now < birthdayDate) {
-            const diff = birthdayDate - now;
-            const days = Math.ceil(diff / (1000*60*60*24));
-            message.innerHTML = `เปิดให้เล่นในอีก ${days} วัน`;
-            lockSection.style.display = "block";
-        } else {
-            lockSection.style.display = "none";
-            startSection.style.display = "flex";
-        }
-    }
+function updateCountdown(){
+  const now = new Date();
+  const diff = birthdayDate - now;
 
-    function startCountdown() {
-        document.getElementById("startSection").style.display = "none";
-        const countdownSection = document.getElementById("countdownSection");
-        const countdownNumber = document.getElementById("countdownNumber");
-        countdownSection.style.display = "flex";
+  if(diff <= 0){
+    lockScreen.classList.remove("show");
+    start.classList.add("show");
+    return;
+  }
 
-        let num = 3;
-        countdownNumber.innerText = num;
+  const d = Math.floor(diff/(1000*60*60*24));
+  const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+  const m = Math.floor((diff%(1000*60*60))/(1000*60));
+  const s = Math.floor((diff%(1000*60))/1000);
 
-        const timer = setInterval(() => {
-            num--;
-            if (num === 0) {
-                clearInterval(timer);
-                countdownSection.style.display = "none";
-                startCake();
-            } else {
-                countdownNumber.innerText = num;
-            }
-        }, 1000);
-    }
+  lockTimer.textContent = `${d} วัน ${h} ชม. ${m} นาที ${s} วินาที`;
 
-    function startCake() {
-        document.getElementById("cakeSection").style.display = "flex";
-    }
+  setTimeout(updateCountdown,1000);
+}
+updateCountdown();
 
-    function finishCake() {
-        alert("แฮปปี้เบิร์ธเดย์นะ! 🎉");
-        // ตรงนี้เดี๋ยวต่อไปแทนด้วยระบบเดิมของคุณ เช่น next ไปวิดีโอ
-    }
+/* ==================== CAKE ==================== */
+let cakeClicks=0;
+cake.onclick=()=>{
+  cakeClicks++;
+  if(cakeClicks>=10){
+    cake.textContent="🧁";
+    cakeMsg.style.display="block";
+  }
+};
 
-    checkDate();
+function goStory(){
+  show(cakeScreen,story);
+  loadStory();
+}
+
+/* ==================== STORY ==================== */
+const stories=[
+  {title:"วัยเด็ก 👶",img:"img1.jpg",text:"เด็กน้อยที่ยิ้มเก่งมาก"},
+  {title:"เริ่มโต 🧸",img:"img2.jpg",text:"เริ่มซน เริ่มดื้อ"},
+  {title:"วัยซน 🚲",img:"img3.jpg",text:"ล้มแล้วลุกเก่ง"},
+  {title:"มัธยม 🎒",img:"img4.jpg",text:"เริ่มรู้จักโลก"},
+  {title:"รอยยิ้ม 😊",img:"img5.jpg",text:"รอยยิ้มที่เรารัก"},
+  {title:"โตขึ้น 💫",img:"img6.jpg",text:"เป็นตัวเองมากขึ้น"},
+  {title:"วันนี้ 🤍",img:"img7.jpg",text:"คนที่ภูมิใจมาก"},
+  {title:"ปัจจุบัน 🎂",img:"img8.jpg",text:"Happy Birthday APIWAT"}
+];
+
+let i=0;
+function loadStory(){
+  storyTitle.textContent=stories[i].title;
+  storyImg.src=stories[i].img;
+  storyText.textContent=stories[i].text;
+}
+function nextStory(){
+  i++;
+  if(i>=stories.length){
+    show(story,videoScreen);
+    return;
+  }
+  loadStory();
+}
+
+/* ==================== VIDEO ==================== */
+loveVideo.onended=()=>{
+  videoNext.style.display="inline-block";
+};
+
+/* ==================== ENDING ==================== */
+function goEnding(){
+  show(final,ending);
+  const v=document.getElementById("endingVideo");
+  v.currentTime=0;
+  v.play().catch(()=>{});
+}
 </script>
+
 </body>
 </html>
