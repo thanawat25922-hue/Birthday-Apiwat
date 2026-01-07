@@ -18,6 +18,7 @@ body{
   text-align:center;
 }
 
+/* SCREEN */
 .screen{
   display:none;
   height:100vh;
@@ -44,21 +45,9 @@ button{
   box-shadow:0 10px 25px rgba(0,0,0,.2);
 }
 
-.back-btn{
-  position:absolute;
-  top:20px;
-  left:20px;
-  padding:10px 18px;
-  font-size:16px;
-  border:none;
-  border-radius:30px;
-  background:rgba(255,255,255,.9);
-  cursor:pointer;
-}
-
 /* CAKE */
 #cake{
-  font-size:160px;
+  font-size:150px;
   cursor:pointer;
   animation:shake 1.5s infinite;
 }
@@ -87,36 +76,30 @@ video.play{
   box-shadow:0 18px 40px rgba(0,0,0,.25);
 }
 
-/* ENDING */
+/* ===== ENDING (FIXED & STABLE) ===== */
 #ending{
   background:#000;
   color:#fff;
-  overflow:hidden;
-  display:flex;
-  justify-content:center;
-  align-items:center;
   text-align:center;
 }
 
-#ending video{
-  position:absolute;
+#endingVideo{
+  position:fixed;
   inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
-  z-index:0;
+  z-index:-2;
 }
 
-#ending .overlay{
-  position:absolute;
+#endingOverlay{
+  position:fixed;
   inset:0;
   background:rgba(0,0,0,.4);
-  z-index:1;
+  z-index:-1;
 }
 
 .ending-text{
-  position:relative;
-  z-index:2;
   animation:fadeUp 2s ease forwards;
 }
 
@@ -138,7 +121,7 @@ video.play{
 <div id="start" class="screen show">
   <h1>Happy Birthday APIWAT 🎂</h1>
   <p>วันนี้เป็นวันพิเศษมากเลยนะ 🤍</p>
-  <button onclick="goCake()">เริ่มเลย ✨</button>
+  <button onclick="show(start,cakeScreen)">เริ่มเลย ✨</button>
 </div>
 
 <!-- CAKE -->
@@ -146,11 +129,19 @@ video.play{
   <h1>เป่าเค้กก่อน 🎉</h1>
   <div id="cake">🎂</div>
   <p>กดเค้กรัว ๆ ให้เทียนดับ 🔥</p>
+
+  <div id="cakeMsg" style="display:none">
+    <p>
+      Happy birthday นะแฟน 🤍<br>
+      เติบโตขึ้นอีกปีแล้ว<br>
+      ลองกด Next เค้ามีอะไรให้เธอดู 💝
+    </p>
+    <button onclick="show(cakeScreen,story)">Next ➜</button>
+  </div>
 </div>
 
 <!-- STORY -->
 <div id="story" class="screen">
-  <button class="back-btn" onclick="prevStory()">⬅️</button>
   <h1 id="storyTitle"></h1>
   <img id="storyImg" class="story-img">
   <p id="storyText"></p>
@@ -159,7 +150,6 @@ video.play{
 
 <!-- VIDEO -->
 <div id="videoScreen" class="screen">
-  <button class="back-btn" onclick="show(videoScreen,story)">⬅️</button>
   <h1>Just For You 💖</h1>
   <video id="loveVideo" class="play" controls playsinline>
     <source src="video.mp4" type="video/mp4">
@@ -172,20 +162,17 @@ video.play{
 <!-- FINAL -->
 <div id="final" class="screen">
   <h1>Happy Birthday APIWAT 🎉</h1>
-  <p>
-    ขอให้ปีที่ 19 นี้<br>
-    เต็มไปด้วยความสุข<br>
-    และรอยยิ้ม 🤍
-  </p>
-  <button onclick="goEnding()">ตอนจบ ✨</button>
+  <p>ขอบคุณที่เติบโตมาอย่างดี 🤍</p>
+  <button onclick="show(final,ending)">ตอนจบ ✨</button>
 </div>
 
 <!-- ENDING -->
 <div id="ending" class="screen">
-  <video autoplay muted loop playsinline preload="auto">
+  <video id="endingVideo" autoplay muted loop playsinline preload="auto">
     <source src="ending.mp4" type="video/mp4">
   </video>
-  <div class="overlay"></div>
+  <div id="endingOverlay"></div>
+
   <div class="ending-text">
     <h1>รักเธอเสมอนะ อภิวัฒน์ 🤍</h1>
     <p class="credit">create by Tanawut<br>ตั้งใจทำให้เธอนะ</p>
@@ -193,26 +180,18 @@ video.play{
 </div>
 
 <script>
-const screens={
-  start,startScreen:start,
-  cakeScreen,story,videoScreen,final,ending
-};
-
 function show(from,to){
   from.classList.remove("show");
   to.classList.add("show");
 }
 
 /* CAKE */
-let cakeClicks=0;
-function goCake(){ show(start,cakeScreen); }
-
+let clicks=0;
 cake.onclick=()=>{
-  cakeClicks++;
-  if(cakeClicks>=10){
+  clicks++;
+  if(clicks>=10){
     cake.textContent="🧁";
-    setTimeout(()=>show(cakeScreen,story),800);
-    loadStory();
+    cakeMsg.style.display="block";
   }
 };
 
@@ -227,35 +206,27 @@ const stories=[
   {title:"วันนี้ 🤍",img:"img7.jpg",text:"คนที่ภูมิใจมาก"},
   {title:"ปัจจุบัน 🎂",img:"img8.jpg",text:"Happy Birthday APIWAT"}
 ];
-let index=0;
-
+let i=0;
 function loadStory(){
-  const s=stories[index];
-  storyTitle.textContent=s.title;
-  storyImg.src=s.img;
-  storyText.textContent=s.text;
+  storyTitle.textContent=stories[i].title;
+  storyImg.src=stories[i].img;
+  storyText.textContent=stories[i].text;
 }
+loadStory();
+
 function nextStory(){
-  index++;
-  if(index>=stories.length){
+  i++;
+  if(i>=stories.length){
     show(story,videoScreen);
     return;
   }
   loadStory();
-}
-function prevStory(){
-  if(index>0){index--;loadStory();}
 }
 
 /* VIDEO */
 loveVideo.onended=()=>{
   videoNext.style.display="inline-block";
 };
-
-/* END */
-function goEnding(){
-  show(final,ending);
-}
 </script>
 
 </body>
