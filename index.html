@@ -5,137 +5,162 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Happy Birthday APIWAT 🎂</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 body{
   margin:0;
-  font-family:'Itim', system-ui, -apple-system;
-  background:linear-gradient(135deg,#fff1f7,#fff9e6);
+  font-family:'Nunito',sans-serif;
+  background:linear-gradient(135deg,#fff1eb,#ace0f9);
   height:100vh;
   overflow:hidden;
-  color:#333;
+  text-align:center;
 }
 
-/* screen system */
 .screen{
   display:none;
   height:100vh;
   justify-content:center;
   align-items:center;
   flex-direction:column;
-  text-align:center;
-  padding:20px;
 }
 .show{display:flex}
 
-/* text */
 h1{
-  font-size:40px;
+  font-size:36px;
   margin-bottom:10px;
 }
+
 p{
   font-size:20px;
-  line-height:1.6;
+  line-height:1.8;
+  max-width:85%;
 }
 
-/* button */
 button{
   margin-top:20px;
   padding:14px 36px;
   font-size:18px;
   border:none;
-  border-radius:999px;
+  border-radius:40px;
   background:#ff8fab;
   color:#fff;
   cursor:pointer;
-  box-shadow:0 10px 25px rgba(255,143,171,.4);
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
 }
 
-/* story image */
+/* STORY */
 .story-img{
-  width:80%;
+  width:85%;
   max-width:420px;
-  aspect-ratio:4/3;
+  height:300px;
   object-fit:cover;
   border-radius:26px;
   margin:20px 0;
   box-shadow:0 18px 40px rgba(0,0,0,.18);
-  background:#fff;
+}
+
+/* VIDEO */
+video{
+  width:85%;
+  max-width:420px;
+  border-radius:24px;
+  margin:20px 0;
+  box-shadow:0 18px 40px rgba(0,0,0,.25);
 }
 </style>
 </head>
 
 <body>
 
-<!-- OPEN -->
-<div id="open" class="screen show">
-  <h1>🎁 มีอะไรจะให้</h1>
-  <p>กดเปิดดูหน่อยสิ 🤍</p>
-  <button onclick="goStory()">Open</button>
+<!-- START -->
+<div id="start" class="screen show">
+  <h1>Happy Birthday APIWAT 🎂</h1>
+  <p>วันนี้เราอยากเล่าเรื่องราวของเธอ<br>ตั้งแต่วันแรกจนถึงวันนี้ 🤍</p>
+  <button onclick="startStory()">เริ่มเลย ✨</button>
 </div>
 
 <!-- STORY -->
 <div id="story" class="screen">
-  <h1 id="storyTitle">Happy Birthday APIWAT 🎂</h1>
+  <h1 id="storyTitle"></h1>
   <img id="storyImg" class="story-img">
   <p id="storyText"></p>
-  <button id="nextBtn">Next 💫</button>
+  <button onclick="nextStory()">ถัดไป ➜</button>
 </div>
 
-<!-- END -->
-<div id="end" class="screen">
-  <h1>🤍</h1>
+<!-- VIDEO -->
+<div id="videoScreen" class="screen">
+  <h1>Just For You 💫</h1>
+  <video id="birthdayVideo" controls playsinline>
+    <source src="video.mp4" type="video/mp4">
+  </video>
+  <button onclick="goFinal()">ไปต่อ 💌</button>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="screen">
+  <h1>Happy Birthday APIWAT 🎉</h1>
   <p>
+    ขอบคุณที่เติบโตมาอย่างดี<br>
+    ขอบคุณที่เป็นตัวเองในทุกวัน<br><br>
     ขอให้ปีที่ 19 นี้<br>
-    เป็นปีที่มีรอยยิ้มเยอะที่สุด<br>
-    และมีคนคนนี้อยู่ข้าง ๆ เสมอ
+    เต็มไปด้วยความสุข เสียงหัวเราะ<br>
+    และมีเราข้าง ๆ แบบนี้เสมอ 🤍
   </p>
 </div>
 
 <script>
-const openScreen=document.getElementById("open");
-const storyScreen=document.getElementById("story");
-const endScreen=document.getElementById("end");
+const start=document.getElementById("start");
+const story=document.getElementById("story");
+const videoScreen=document.getElementById("videoScreen");
+const final=document.getElementById("final");
 
+const storyTitle=document.getElementById("storyTitle");
 const storyImg=document.getElementById("storyImg");
 const storyText=document.getElementById("storyText");
-const nextBtn=document.getElementById("nextBtn");
 
-/* 8 ช่วงเวลา */
 const stories=[
-  {img:"img1.jpg",text:"เด็กตัวเล็ก ๆ คนนี้<br>ยังไม่รู้เลยว่าโตขึ้นจะน่ารักขนาดนี้ 🧸"},
-  {img:"img2.jpg",text:"เริ่มโต เริ่มซน<br>แต่รอยยิ้มยังเหมือนเดิม 😊"},
-  {img:"img3.jpg",text:"ช่วงที่โลกเริ่มกว้างขึ้น<br>และความฝันก็เริ่มชัดขึ้น 🌱"},
-  {img:"img4.jpg",text:"เริ่มมีวันที่เหนื่อย<br>แต่ก็ยังไม่ยอมแพ้ 💪"},
-  {img:"img5.jpg",text:"โตขึ้นอีกนิด<br>เก่งขึ้นอีกหน่อย (ดื้อขึ้นด้วยนิดนึง 😆)"},
-  {img:"img6.jpg",text:"ผ่านอะไรมาเยอะกว่าที่คิด<br>แต่ก็ยังเป็นคนใจดีเสมอ"},
-  {img:"img7.jpg",text:"จนมาถึงวันที่ยิ้มได้มากขึ้น<br>และเริ่มมีความสุขกับตัวเอง 🤍"},
-  {img:"img9.jpg",text:"และวันนี้…<br>Happy Birthday APIWAT อายุ 19 🎂"}
+  { title:"วัยเด็ก 👶", img:"img1.jpg", text:"เด็กน้อยที่ยิ้มเก่งตั้งแต่ยังไม่รู้เรื่อง" },
+  { title:"เริ่มโต 🧸", img:"img2.jpg", text:"เริ่มดื้อขึ้นนิดหน่อย แต่ก็น่ารักเหมือนเดิม" },
+  { title:"วัยซน 🚲", img:"img3.jpg", text:"ล้มบ้าง เจ็บบ้าง แต่ก็ลุกเก่งมาก" },
+  { title:"มัธยม 🎒", img:"img4.jpg", text:"ช่วงที่เริ่มรู้จักโลกมากขึ้น" },
+  { title:"รอยยิ้ม 😊", img:"img5.jpg", text:"ยิ้มแบบนี้ทีไร ใจเราละลายทุกที" },
+  { title:"โตขึ้น 💫", img:"img6.jpg", text:"เริ่มเป็นตัวเองในแบบที่เท่มาก" },
+  { title:"วันนี้ 🤍", img:"img7.jpg", text:"คนที่เราภูมิใจในตัวมากที่สุด" },
+  { title:"ปัจจุบัน 🎂", img:"img8.jpg", text:"Happy Birthday APIWAT อายุ 19 แล้วนะ!" }
 ];
 
 let index=0;
 
-function goStory(){
-  openScreen.classList.remove("show");
-  storyScreen.classList.add("show");
+function startStory(){
+  start.classList.remove("show");
+  story.classList.add("show");
   loadStory();
 }
 
 function loadStory(){
-  storyImg.src=stories[index].img;
-  storyText.innerHTML=stories[index].text;
+  const s=stories[index];
+  storyTitle.textContent=s.title;
+  storyImg.src=s.img;
+  storyText.textContent=s.text;
 }
 
-nextBtn.onclick=()=>{
+function nextStory(){
   index++;
-  if(index<stories.length){
-    loadStory();
-  }else{
-    storyScreen.classList.remove("show");
-    endScreen.classList.add("show");
+  if(index>=stories.length){
+    story.classList.remove("show");
+    videoScreen.classList.add("show");
+    return;
   }
-};
+  loadStory();
+}
+
+function goFinal(){
+  videoScreen.classList.remove("show");
+  final.classList.add("show");
+}
+
+document.getElementById("birthdayVideo").onended=goFinal;
 </script>
 
 </body>
